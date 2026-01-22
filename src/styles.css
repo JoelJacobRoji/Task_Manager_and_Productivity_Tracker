@@ -1,0 +1,292 @@
+/* 🌈 GLOBAL BACKGROUND */
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: 
+    linear-gradient(rgba(10,10,20,0.85), rgba(10,10,20,0.85)),
+    url('https://images.unsplash.com/photo-1557683316-973673baf926');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #eaeaf0;
+}
+
+/* CENTER ROOT */
+app-root {
+  display: block;
+}
+
+/* ✨ PRETTY CARDS */
+mat-card {
+  border-radius: 18px !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+mat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* 💊 FILTER BUTTONS */
+button[mat-raised-button] {
+  border-radius: 999px !important;
+  padding: 8px 20px;
+  font-weight: 600;
+}
+
+/* ✅ COMPLETED TASK LOOK */
+.completed-task {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* 🌸 CATEGORY CHIP */
+.category-chip {
+  background: #ede9fe;
+  color: #6d28d9;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* 🔥 PRIORITY CHIPS */
+.priority-high {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.priority-medium {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.priority-low {
+  background: #dcfce7;
+  color: #166534;
+}
+
+/* ===== APP CONTAINER ===== */
+.app-shell {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(14px);
+  border-radius: 28px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== NAVBAR ===== */
+.nav {
+  background: rgba(20, 20, 40, 0.9);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-between;
+  padding: 0 32px;
+}
+
+.logo {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nav-right a {
+  color: #eaeaf0;
+  margin-left: 24px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.add-btn {
+  background: #7c7cff;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+
+.page-wrapper {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 30px;
+}
+
+.task-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.18);
+}
+
+.form-title {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.half-width {
+  flex: 1;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.spacer {
+  flex: 1;
+}
+
+/* ===== APP BACKGROUND ===== */
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background:
+    radial-gradient(circle at top left, #0f172a, #020617),
+    linear-gradient(180deg, #020617, #020617);
+  color: #e5e7eb;
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+}
+
+.filter-bar button {
+  background: rgba(255,255,255,0.08);
+  color: #e5e7eb;
+  border-radius: 10px;
+}
+
+/* ===== TASK CARD ===== */
+.task-card {
+  background: rgba(255,255,255,0.06) !important;
+  backdrop-filter: blur(14px);
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.12);
+  padding: 24px;
+  margin-bottom: 22px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+}
+
+/* ===== TASK TITLE ===== */
+.task-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+/* ===== MUTED TEXT ===== */
+.task-muted {
+  color: #9ca3af;
+  font-size: 14px;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.task-actions button {
+  color: #c7d2fe;
+}
+
+/* ===== FORM PANEL ===== */
+.form-card {
+  background: rgba(255,255,255,0.04);
+  border-radius: 20px;
+  padding: 36px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+}
+
+/* ===== INPUT FIELDS ===== */
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+/* Outline border (lighter grid look) */
+.mat-mdc-text-field-wrapper {
+  background: rgba(255,255,255,0.03);
+  border-radius: 12px;
+}
+
+/* Actual input box */
+.mat-mdc-form-field-flex {
+  padding: 14px 18px !important;
+}
+
+/* Text inside inputs */
+.mat-mdc-input-element,
+.mat-mdc-select-value {
+  padding-left: 6px;
+  font-size: 15px;
+}
+
+/* Labels */
+.mat-mdc-floating-label {
+  color: #cbd5f5 !important;
+  letter-spacing: 0.3px;
+}
+
+/* FORM CARD */
+.form-card {
+  width: 100%;
+  max-width: 620px;
+  padding: 36px;
+  border-radius: 20px;
+
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+}
+
+/* TITLE */
+.form-title {
+  margin-bottom: 24px;
+  font-weight: 700;
+}
+
+/* WIDTH HELPERS */
+.full-width {
+  width: 100%;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+
+.half-width {
+  flex: 1;
+}
+
+/* ACTION BUTTONS */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+/* FORCE CENTER ADD TASK PAGE */
+.form-page {
+  position: fixed;
+  inset: 64px 0 0 0; /* below navbar */
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+
+/* LOCK FORM SIZE + ALIGN */
+.form-card {
+  width: 100%;
+  max-width: 620px;
+}
