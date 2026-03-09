@@ -110,20 +110,29 @@ body.light-theme .mat-mdc-text-field-wrapper {
 
 /* Extra breathing room for dashboard filter selects */
 .tasks-page .filters-card .mat-mdc-text-field-wrapper {
-  padding-left: 12px !important;
-  padding-right: 12px !important;
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+.tasks-page .filters-card .mat-mdc-form-field-flex {
+  align-items: center !important;
+  min-height: 70px !important;
 }
 
 .tasks-page .filters-card .mat-mdc-form-field-infix {
-  min-height: 64px !important;
-  padding-top: 16px !important;
-  padding-bottom: 14px !important;
-  padding-left: 4px !important;
-  padding-right: 4px !important;
+  min-height: 68px !important;
+  padding-top: 18px !important;
+  padding-bottom: 16px !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
 }
 
 .tasks-page .filters-card .mat-mdc-select-value {
-  padding-left: 1px;
+  padding-left: 3px;
+}
+
+.tasks-page .filters-card .mat-mdc-select-arrow-wrapper {
+  margin-right: 2px;
 }
 
 textarea.mat-mdc-input-element {

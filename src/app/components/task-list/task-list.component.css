@@ -9,8 +9,12 @@
   border-radius: var(--radius-lg);
 }
 
+.summary-card {
+  padding: 1.15rem 1.4rem 1.05rem;
+}
+
 .filters-card {
-  padding: 1rem 1.2rem 1.05rem;
+  padding: 1.25rem 1.4rem 1.15rem;
 }
 
 .summary-line {
@@ -58,7 +62,8 @@
 .filter-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(180px, 1fr));
-  gap: 0.9rem;
+  gap: 1rem;
+  align-items: center;
 }
 
 .task-cards {
@@ -140,7 +145,7 @@
   }
 
   .filters-card {
-    padding: 0.85rem 0.85rem 0.9rem;
+    padding: 1rem 1rem 0.95rem;
   }
 
   .filter-grid {
