@@ -153,28 +153,6 @@ Copy-Item "dist/TaskTracker/browser/index.html" "dist/TaskTracker/browser/404.ht
 - `npm run build` passes
 - `npm test -- --watch=false` passes
 
-## Criteria Coverage (1–9)
-This implementation satisfies all required criteria from the project brief:
-1. Setup + TypeScript essentials
-2. Angular architecture + components
-3. Routing + route params + guard
-4. Services + DI + persistence
-5. Forms + validation
-6. Custom pipe + directive
-7. Angular Material UI
-8. Observables + HttpClient + async + interceptor
-9. Integration + testing + deploy readiness
-
-## Screenshots
-Store screenshots in:
-- `docs/screenshots/`
-
-Suggested files:
-- `task-list.png`
-- `add-task-form.png`
-- `task-detail.png`
-- `completed-tasks.png`
-- `theme-toggle.png`
 
 ## Notes
 - If backend has cold start delay on Render free tier, first API request may take a few seconds.
