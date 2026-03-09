@@ -1,0 +1,15 @@
+{
+  "name": "task-tracker-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JSON API backend for Task Tracker",
+  "main": "server.cjs",
+  "scripts": {
+    "start": "node server.cjs",
+    "dev": "node server.cjs"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
