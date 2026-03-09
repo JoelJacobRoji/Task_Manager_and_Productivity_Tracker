@@ -1,0 +1,29 @@
+[
+  {
+    "id": 101,
+    "title": "Finalize Angular module plan",
+    "description": "Review routing and services architecture for the task tracker app.",
+    "dueDate": "2026-03-15",
+    "category": "Work",
+    "priority": "High",
+    "completed": false
+  },
+  {
+    "id": 102,
+    "title": "Prepare deployment checklist",
+    "description": "Create deployment notes and verify production build output.",
+    "dueDate": "2026-03-18",
+    "category": "Learning",
+    "priority": "Medium",
+    "completed": false
+  },
+  {
+    "id": 103,
+    "title": "Exercise session",
+    "description": "Complete a 30-minute workout and track consistency.",
+    "dueDate": "2026-03-10",
+    "category": "Health",
+    "priority": "Low",
+    "completed": true
+  }
+]

@@ -1,52 +1,65 @@
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { AppTheme, ThemeService } from '../../services/theme.service';
 
 @Component({
   standalone: true,
   selector: 'app-navbar',
-  imports: [CommonModule, RouterModule],
+  imports: [
+    AsyncPipe,
+    CommonModule,
+    RouterModule,
+    MatButtonModule,
+    MatIconModule,
+    MatToolbarModule
+  ],
   template: `
-    <nav class="navbar">
-      <div class="logo">
-        📝 Task Tracker
-      </div>
+    <mat-toolbar class="navbar">
+      <a class="brand" routerLink="/tasks">Task Tracker</a>
 
       <div class="links">
-        <a routerLink="/tasks">Tasks</a>
-        <a routerLink="/add">+ Add Task</a>
+        <a mat-button routerLink="/tasks" routerLinkActive="active-link">All Tasks</a>
+        <a mat-button routerLink="/add-task" routerLinkActive="active-link">Add Task</a>
+        <a mat-button routerLink="/completed" routerLinkActive="active-link">Completed</a>
       </div>
-    </nav>
+
+      <div class="actions">
+        <button mat-icon-button (click)="toggleTheme()" [attr.aria-label]="(theme$ | async) === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+          <mat-icon>{{ (theme$ | async) === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
+        </button>
+
+        <button mat-stroked-button (click)="toggleAuth()">
+          <mat-icon>{{ (isLoggedIn$ | async) ? 'lock_open' : 'lock' }}</mat-icon>
+          {{ (isLoggedIn$ | async) ? 'Logout' : 'Login' }}
+        </button>
+      </div>
+    </mat-toolbar>
   `,
-  styles: [`
-    .navbar {
-      height: 64px;
-      padding: 0 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(90deg, #0f172a, #1e293b);
-      color: white;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-    }
-
-    .links a {
-      margin-left: 24px;
-      text-decoration: none;
-      font-weight: 600;
-      color: #e5e7eb;
-      transition: color 0.2s ease;
-    }
-
-    .links a:hover {
-      color: #38bdf8;
-    }
-  `]
+  styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent {}
+export class NavbarComponent {
+  readonly isLoggedIn$: Observable<boolean>;
+  readonly theme$: Observable<AppTheme>;
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly themeService: ThemeService
+  ) {
+    this.isLoggedIn$ = this.authService.isLoggedIn$;
+    this.theme$ = this.themeService.theme$;
+  }
+
+  toggleAuth(): void {
+    this.authService.toggle();
+  }
+
+  toggleTheme(): void {
+    this.themeService.toggleTheme();
+  }
+}

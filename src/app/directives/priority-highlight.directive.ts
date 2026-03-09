@@ -1,29 +1,31 @@
-import { Directive, ElementRef, Input, OnInit } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { TaskPriority } from '../models/task.model';
 
 @Directive({
   selector: '[appPriorityHighlight]',
   standalone: true
 })
-export class PriorityHighlightDirective implements OnInit {
+export class PriorityHighlightDirective implements OnChanges {
+  @Input('appPriorityHighlight') priority: TaskPriority = 'Medium';
+  @Input() dueDate = '';
+  @Input() completed = false;
 
-  @Input('appPriorityHighlight') priority!: 'Low' | 'Medium' | 'High';
+  constructor(private readonly el: ElementRef<HTMLElement>) {}
 
-  constructor(private el: ElementRef) {}
-
-  ngOnInit() {
+  ngOnChanges(): void {
+    const host = this.el.nativeElement;
+    const now = new Date();
+    const dueDate = this.dueDate ? new Date(this.dueDate) : null;
+    const isOverdue = !!dueDate && !this.completed && dueDate.getTime() < now.getTime();
 
     if (this.priority === 'High') {
-      this.el.nativeElement.style.borderLeft = '5px solid red';
+      host.style.borderLeft = '5px solid #ef4444';
+    } else if (this.priority === 'Medium') {
+      host.style.borderLeft = '5px solid #f59e0b';
+    } else {
+      host.style.borderLeft = '5px solid #22c55e';
     }
 
-    if (this.priority === 'Medium') {
-      this.el.nativeElement.style.borderLeft = '5px solid orange';
-    }
-
-    if (this.priority === 'Low') {
-      this.el.nativeElement.style.borderLeft = '5px solid green';
-    }
-
+    host.style.background = isOverdue ? 'rgba(239, 68, 68, 0.12)' : '';
   }
-
 }

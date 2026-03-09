@@ -1,22 +1,36 @@
 import { Routes } from '@angular/router';
-
-import { TaskListComponent } from './components/task-list/task-list.component';
-import { TaskFormComponent } from './components/task-form/task-form.component';
-import { TaskDetailComponent } from './components/task-detail/task-detail.component';
-import { CompletedTasksComponent } from './components/completed-tasks/completed-tasks.component';
-import { TaskEditComponent } from './components/task-edit/task-edit.component';
 import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-
-  { path: '', component: TaskListComponent },
-
-  { path: 'add-task', component: TaskFormComponent },
-
-  { path: 'task/:id', component: TaskDetailComponent },
-
-  { path: 'completed', component: CompletedTasksComponent },
-
-  { path: 'edit/:id', component: TaskEditComponent, canActivate: [authGuard] }
-
+  { path: '', redirectTo: 'tasks', pathMatch: 'full' },
+  {
+    path: 'tasks',
+    loadComponent: () =>
+      import('./components/task-list/task-list.component').then(component => component.TaskListComponent)
+  },
+  {
+    path: 'add-task',
+    loadComponent: () =>
+      import('./components/task-form/task-form.component').then(component => component.TaskFormComponent)
+  },
+  { path: 'add', redirectTo: 'add-task', pathMatch: 'full' },
+  {
+    path: 'task/:id',
+    loadComponent: () =>
+      import('./components/task-detail/task-detail.component').then(component => component.TaskDetailComponent)
+  },
+  {
+    path: 'completed',
+    loadComponent: () =>
+      import('./components/completed-tasks/completed-tasks.component').then(
+        component => component.CompletedTasksComponent
+      )
+  },
+  {
+    path: 'edit/:id',
+    loadComponent: () =>
+      import('./components/task-edit/task-edit.component').then(component => component.TaskEditComponent),
+    canActivate: [authGuard]
+  },
+  { path: '**', redirectTo: 'tasks' }
 ];
