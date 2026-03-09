@@ -2,13 +2,11 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
 import { RouterModule } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -30,10 +28,8 @@ import { Task, TaskPriority } from '../../models/task.model';
     MatCheckboxModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatIconModule,
     MatProgressBarModule,
     MatSelectModule,
-    MatTableModule,
     RouterModule,
     PriorityHighlightDirective,
     TaskFilterPipe
@@ -50,20 +46,30 @@ import { Task, TaskPriority } from '../../models/task.model';
         <mat-progress-bar mode="determinate" [value]="(completionPercent$ | async) ?? 0"></mat-progress-bar>
       </mat-card>
 
+      <div class="status-filters">
+        <button mat-button class="filter-pill" [class.active]="filter.completion === 'all'" (click)="setCompletion('all')">
+          All
+        </button>
+        <button
+          mat-button
+          class="filter-pill"
+          [class.active]="filter.completion === 'pending'"
+          (click)="setCompletion('pending')"
+        >
+          Pending
+        </button>
+        <button
+          mat-button
+          class="filter-pill"
+          [class.active]="filter.completion === 'completed'"
+          (click)="setCompletion('completed')"
+        >
+          Completed
+        </button>
+      </div>
+
       <mat-card class="filters-card">
         <div class="filter-grid">
-          <mat-form-field appearance="outline">
-            <mat-label>Status</mat-label>
-            <mat-select
-              [value]="filter.completion"
-              (valueChange)="filter.completion = $event"
-            >
-              <mat-option value="all">All</mat-option>
-              <mat-option value="pending">Pending</mat-option>
-              <mat-option value="completed">Completed</mat-option>
-            </mat-select>
-          </mat-form-field>
-
           <mat-form-field appearance="outline">
             <mat-label>Priority</mat-label>
             <mat-select [value]="filter.priority" (valueChange)="filter.priority = $event">
@@ -85,85 +91,49 @@ import { Task, TaskPriority } from '../../models/task.model';
       </mat-card>
 
       <ng-container *ngIf="(tasks$ | async | taskFilter: filter) as filteredTasks">
-        <mat-card class="table-card">
-          <div class="table-wrapper">
-            <table mat-table [dataSource]="filteredTasks" class="tasks-table">
-              <ng-container matColumnDef="status">
-                <th mat-header-cell *matHeaderCellDef>Done</th>
-                <td mat-cell *matCellDef="let task">
-                  <mat-checkbox
-                    [checked]="task.completed"
-                    (change)="toggle(task.id, $event)"
-                    aria-label="Mark complete"
-                  ></mat-checkbox>
-                </td>
-              </ng-container>
+        <div class="task-cards" *ngIf="filteredTasks.length; else emptyState">
+          <mat-card
+            class="task-card"
+            *ngFor="let task of filteredTasks"
+            [appPriorityHighlight]="task.priority"
+            [dueDate]="task.dueDate"
+            [completed]="task.completed"
+          >
+            <div class="task-content">
+              <div class="task-main">
+                <mat-checkbox
+                  class="task-checkbox"
+                  [checked]="task.completed"
+                  (change)="toggle(task.id)"
+                  aria-label="Mark complete"
+                ></mat-checkbox>
 
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef>Task</th>
-                <td
-                  mat-cell
-                  *matCellDef="let task"
-                  [ngClass]="{ completed: task.completed }"
-                  [ngStyle]="{ opacity: task.completed ? 0.6 : 1 }"
-                >
-                  <div class="task-title">{{ task.title }}</div>
-                  <div class="task-description">
-                    {{ task.description | slice: 0 : 80 }}{{ task.description.length > 80 ? '...' : '' }}
-                  </div>
-                </td>
-              </ng-container>
+                <div>
+                  <div class="task-title" [class.completed]="task.completed">{{ task.title }}</div>
+                  <p class="task-description">{{ task.description || 'No description provided.' }}</p>
+                  <p class="task-meta" [class.overdue]="isOverdue(task)">
+                    Due: {{ task.dueDate | date: 'mediumDate' }}
+                  </p>
+                  <p class="task-meta">{{ task.category }} · {{ task.priority }}</p>
+                </div>
+              </div>
 
-              <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef>Category</th>
-                <td mat-cell *matCellDef="let task">{{ task.category }}</td>
-              </ng-container>
+              <div class="task-actions">
+                <button mat-button [routerLink]="['/task', task.id]">View</button>
+                <button mat-button [routerLink]="['/edit', task.id]">Edit</button>
+                <button mat-button color="warn" (click)="delete(task)">Delete</button>
+              </div>
+            </div>
+          </mat-card>
+        </div>
 
-              <ng-container matColumnDef="priority">
-                <th mat-header-cell *matHeaderCellDef>Priority</th>
-                <td mat-cell *matCellDef="let task">{{ task.priority }}</td>
-              </ng-container>
-
-              <ng-container matColumnDef="dueDate">
-                <th mat-header-cell *matHeaderCellDef>Due Date</th>
-                <td mat-cell *matCellDef="let task" [ngClass]="{ overdue: isOverdue(task) }">
-                  {{ task.dueDate | date: 'mediumDate' }}
-                </td>
-              </ng-container>
-
-              <ng-container matColumnDef="actions">
-                <th mat-header-cell *matHeaderCellDef>Actions</th>
-                <td mat-cell *matCellDef="let task">
-                  <button mat-icon-button [routerLink]="['/task', task.id]" aria-label="View details">
-                    <mat-icon>visibility</mat-icon>
-                  </button>
-                  <button mat-icon-button [routerLink]="['/edit', task.id]" aria-label="Edit task">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button color="warn" (click)="delete(task)" aria-label="Delete task">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                </td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr
-                mat-row
-                *matRowDef="let task; columns: displayedColumns;"
-                [appPriorityHighlight]="task.priority"
-                [dueDate]="task.dueDate"
-                [completed]="task.completed"
-                [ngClass]="{ completed: task.completed }"
-              ></tr>
-            </table>
-          </div>
-        </mat-card>
-
-        <mat-card class="empty-state" *ngIf="filteredTasks.length === 0">
-          <h3>No tasks found</h3>
-          <p>Try changing the filters or add a new task.</p>
-          <button mat-raised-button color="primary" routerLink="/add-task">Add Task</button>
-        </mat-card>
+        <ng-template #emptyState>
+          <mat-card class="empty-state">
+            <h3>No tasks found</h3>
+            <p>Try changing filters or add a new task.</p>
+            <button mat-raised-button color="primary" routerLink="/add-task">Add Task</button>
+          </mat-card>
+        </ng-template>
       </ng-container>
     </section>
   `
@@ -175,7 +145,6 @@ export class TaskListComponent {
 
   readonly priorities: TaskPriority[];
   readonly categories: Category[];
-  readonly displayedColumns = ['status', 'title', 'category', 'priority', 'dueDate', 'actions'];
 
   filter: TaskPipeFilter = {
     completion: 'all',
@@ -200,10 +169,12 @@ export class TaskListComponent {
     this.categories = this.taskService.getCategories();
   }
 
-  toggle(id: number, event: MatCheckboxChange): void {
-    if (event) {
-      this.taskService.toggleComplete(id).subscribe();
-    }
+  setCompletion(completion: 'all' | 'pending' | 'completed'): void {
+    this.filter.completion = completion;
+  }
+
+  toggle(id: number): void {
+    this.taskService.toggleComplete(id).subscribe();
   }
 
   delete(task: Task): void {

@@ -21,20 +21,28 @@ import { AppTheme, ThemeService } from '../../services/theme.service';
   ],
   template: `
     <mat-toolbar class="navbar">
-      <a class="brand" routerLink="/tasks">Task Tracker</a>
+      <a class="brand" routerLink="/tasks">
+        <span class="brand-icon">📄</span>
+        <span>Task Tracker</span>
+      </a>
 
       <div class="links">
-        <a mat-button routerLink="/tasks" routerLinkActive="active-link">All Tasks</a>
-        <a mat-button routerLink="/add-task" routerLinkActive="active-link">Add Task</a>
+        <a mat-button routerLink="/tasks" routerLinkActive="active-link">Tasks</a>
+        <a mat-button routerLink="/add-task" routerLinkActive="active-link">+ Add Task</a>
         <a mat-button routerLink="/completed" routerLinkActive="active-link">Completed</a>
       </div>
 
       <div class="actions">
-        <button mat-icon-button (click)="toggleTheme()" [attr.aria-label]="(theme$ | async) === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'">
+        <button
+          mat-icon-button
+          class="theme-btn"
+          (click)="toggleTheme()"
+          [attr.aria-label]="(theme$ | async) === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+        >
           <mat-icon>{{ (theme$ | async) === 'dark' ? 'light_mode' : 'dark_mode' }}</mat-icon>
         </button>
 
-        <button mat-stroked-button (click)="toggleAuth()">
+        <button mat-stroked-button class="auth-btn" (click)="toggleAuth()">
           <mat-icon>{{ (isLoggedIn$ | async) ? 'lock_open' : 'lock' }}</mat-icon>
           {{ (isLoggedIn$ | async) ? 'Logout' : 'Login' }}
         </button>

@@ -3,12 +3,21 @@
 }
 
 :root {
-  --surface-bg: linear-gradient(160deg, #0f172a 0%, #1e293b 45%, #111827 100%);
-  --surface-card: rgba(15, 23, 42, 0.72);
-  --surface-border: rgba(148, 163, 184, 0.25);
-  --text-main: #e2e8f0;
-  --text-muted: #94a3b8;
-  --toolbar-bg: rgba(15, 23, 42, 0.88);
+  --surface-bg:
+    radial-gradient(1200px 600px at 8% -10%, #1f3f85 0%, transparent 50%),
+    radial-gradient(900px 450px at 85% 0%, #1f2d74 0%, transparent 46%),
+    linear-gradient(180deg, #060d2a 0%, #040920 60%, #030717 100%);
+  --surface-card: rgba(15, 24, 57, 0.86);
+  --surface-card-soft: rgba(20, 30, 68, 0.72);
+  --surface-border: rgba(128, 156, 255, 0.24);
+  --text-main: #eef3ff;
+  --text-muted: #b7c2e0;
+  --toolbar-bg: rgba(14, 23, 57, 0.94);
+  --accent: #7fa1ff;
+  --accent-strong: #99b5ff;
+  --danger: #ff4f63;
+  --radius-lg: 20px;
+  --radius-md: 14px;
 }
 
 body {
@@ -16,33 +25,46 @@ body {
   min-height: 100vh;
   background: var(--surface-bg);
   color: var(--text-main);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  line-height: 1.45;
 }
 
 body.dark-theme {
-  --surface-bg: linear-gradient(160deg, #0f172a 0%, #1e293b 45%, #111827 100%);
-  --surface-card: rgba(15, 23, 42, 0.72);
-  --surface-border: rgba(148, 163, 184, 0.25);
-  --text-main: #e2e8f0;
-  --text-muted: #94a3b8;
-  --toolbar-bg: rgba(15, 23, 42, 0.88);
+  --surface-bg:
+    radial-gradient(1200px 600px at 8% -10%, #1f3f85 0%, transparent 50%),
+    radial-gradient(900px 450px at 85% 0%, #1f2d74 0%, transparent 46%),
+    linear-gradient(180deg, #060d2a 0%, #040920 60%, #030717 100%);
+  --surface-card: rgba(15, 24, 57, 0.86);
+  --surface-card-soft: rgba(20, 30, 68, 0.72);
+  --surface-border: rgba(128, 156, 255, 0.24);
+  --text-main: #eef3ff;
+  --text-muted: #b7c2e0;
+  --toolbar-bg: rgba(14, 23, 57, 0.94);
+  --accent: #7fa1ff;
+  --accent-strong: #99b5ff;
+  --danger: #ff4f63;
 }
 
 body.light-theme {
-  --surface-bg: linear-gradient(165deg, #f8fafc 0%, #eef2ff 45%, #e0f2fe 100%);
-  --surface-card: rgba(255, 255, 255, 0.86);
-  --surface-border: rgba(148, 163, 184, 0.4);
+  --surface-bg: linear-gradient(180deg, #e8eeff 0%, #dfe7ff 55%, #d8e1ff 100%);
+  --surface-card: rgba(255, 255, 255, 0.92);
+  --surface-card-soft: rgba(255, 255, 255, 0.78);
+  --surface-border: rgba(109, 127, 188, 0.28);
   --text-main: #0f172a;
-  --text-muted: #475569;
+  --text-muted: #445073;
   --toolbar-bg: rgba(255, 255, 255, 0.94);
+  --accent: #2f4db4;
+  --accent-strong: #203d9e;
+  --danger: #c22040;
 }
 
 mat-toolbar,
 mat-card {
-  background: var(--surface-card) !important;
+  background: var(--surface-card-soft) !important;
   color: var(--text-main) !important;
   border: 1px solid var(--surface-border);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 42px rgba(5, 10, 28, 0.26);
 }
 
 mat-toolbar {
@@ -61,10 +83,57 @@ small {
 
 .form-card {
   width: min(760px, 100%);
+  border-radius: var(--radius-lg) !important;
+  padding: clamp(1rem, 2.4vw, 2rem);
+}
+
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-text-field-wrapper {
+  background: rgba(8, 15, 40, 0.24) !important;
+}
+
+body.light-theme .mat-mdc-text-field-wrapper {
+  background: rgba(255, 255, 255, 0.5) !important;
+}
+
+.mat-mdc-form-field-infix {
+  min-height: 58px !important;
+  padding-top: 14px !important;
+  padding-bottom: 14px !important;
+}
+
+textarea.mat-mdc-input-element {
+  min-height: 90px;
+}
+
+.mat-mdc-select-value,
+.mat-mdc-select-placeholder,
+.mat-mdc-input-element {
+  font-size: 1rem !important;
+  line-height: 1.35 !important;
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+  font-size: 0.98rem;
+  line-height: 1.3;
+}
+
+.mat-mdc-button-base {
+  border-radius: 10px !important;
+}
+
+.mat-mdc-progress-bar {
+  height: 8px !important;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 @media (max-width: 720px) {
   .form-card {
     width: 100%;
+    padding: 1rem;
   }
 }

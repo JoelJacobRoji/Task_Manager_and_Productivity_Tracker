@@ -29,10 +29,13 @@ import { TaskService } from '../../services/task.service';
   template: `
     <section class="form-page">
       <mat-card class="form-card">
-        <h2 class="form-title">Add New Task</h2>
+        <h2 class="form-title">
+          <mat-icon>auto_awesome</mat-icon>
+          Add New Task
+        </h2>
 
         <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="outline" class="full-width task-field">
             <mat-label>Title</mat-label>
             <input matInput formControlName="title" placeholder="Task title" />
             <mat-hint align="end">{{ form.controls.title.value.length }}/60</mat-hint>
@@ -40,7 +43,7 @@ import { TaskService } from '../../services/task.service';
             <mat-error *ngIf="form.controls.title.hasError('maxlength')">Title cannot exceed 60 characters.</mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="outline" class="full-width task-field">
             <mat-label>Description</mat-label>
             <textarea matInput rows="4" formControlName="description"></textarea>
             <mat-hint align="end">{{ form.controls.description.value.length }}/200</mat-hint>
@@ -51,7 +54,7 @@ import { TaskService } from '../../services/task.service';
           </mat-form-field>
 
           <div class="form-row">
-            <mat-form-field appearance="outline" class="half-width">
+            <mat-form-field appearance="outline" class="half-width task-field">
               <mat-label>Category</mat-label>
               <mat-select formControlName="category">
                 <mat-option *ngFor="let category of categories" [value]="category.name">
@@ -61,7 +64,7 @@ import { TaskService } from '../../services/task.service';
               <mat-error *ngIf="form.controls.category.hasError('required')">Category is required.</mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="half-width">
+            <mat-form-field appearance="outline" class="half-width task-field">
               <mat-label>Priority</mat-label>
               <mat-select formControlName="priority">
                 <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority }}</mat-option>
@@ -69,7 +72,7 @@ import { TaskService } from '../../services/task.service';
             </mat-form-field>
           </div>
 
-          <mat-form-field appearance="outline" class="full-width">
+          <mat-form-field appearance="outline" class="full-width task-field">
             <mat-label>Due Date</mat-label>
             <input matInput type="date" formControlName="dueDate" [min]="minDate" />
             <mat-error *ngIf="form.controls.dueDate.hasError('required')">Due date is required.</mat-error>
@@ -90,7 +93,65 @@ import { TaskService } from '../../services/task.service';
         </form>
       </mat-card>
     </section>
-  `
+  `,
+  styles: [
+    `
+      .form-page {
+        display: grid;
+        justify-items: center;
+      }
+
+      .form-card {
+        width: min(860px, 100%);
+      }
+
+      .form-title {
+        margin: 0 0 1.1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: clamp(1.5rem, 3vw, 2.15rem);
+        font-weight: 800;
+      }
+
+      .task-field {
+        margin-bottom: 0.4rem;
+      }
+
+      .full-width {
+        width: 100%;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .form-actions {
+        margin-top: 1.2rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.6rem;
+      }
+
+      .form-actions button {
+        min-width: 130px;
+        font-weight: 700;
+      }
+
+      @media (max-width: 720px) {
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .form-actions {
+          justify-content: stretch;
+          flex-wrap: wrap;
+        }
+      }
+    `
+  ]
 })
 export class TaskFormComponent {
   readonly categories: Category[];

@@ -1,34 +1,72 @@
 .navbar {
   position: sticky;
   top: 0;
-  z-index: 20;
+  z-index: 40;
+  min-height: 72px;
+  padding: 0.75rem 1.25rem;
   display: flex;
   gap: 1rem;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(100, 116, 139, 0.25);
+  border-bottom: 1px solid var(--surface-border);
 }
 
 .brand {
   color: inherit;
   text-decoration: none;
-  font-weight: 700;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  letter-spacing: 0.2px;
+}
+
+.brand-icon {
+  font-size: 1.2rem;
 }
 
 .links,
 .actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.35rem;
+}
+
+.links a {
+  color: var(--text-main);
+  opacity: 0.88;
+  font-weight: 600;
+  padding: 0.4rem 0.75rem;
+  border-radius: 10px;
+}
+
+.links a:hover {
+  background: rgba(127, 161, 255, 0.14);
+  opacity: 1;
 }
 
 .active-link {
   font-weight: 700;
+  background: rgba(127, 161, 255, 0.2);
+}
+
+.theme-btn {
+  color: var(--text-main);
+}
+
+.auth-btn {
+  border-color: var(--surface-border) !important;
+  color: var(--text-main) !important;
+  font-weight: 600;
+}
+
+.auth-btn .mat-icon {
+  margin-right: 0.3rem;
 }
 
 @media (max-width: 840px) {
   .navbar {
     height: auto;
-    padding: 0.5rem;
+    padding: 0.6rem 0.75rem;
     flex-wrap: wrap;
   }
 
@@ -37,5 +75,9 @@
     width: 100%;
     justify-content: center;
     flex-wrap: wrap;
+  }
+
+  .actions {
+    margin-left: auto;
   }
 }

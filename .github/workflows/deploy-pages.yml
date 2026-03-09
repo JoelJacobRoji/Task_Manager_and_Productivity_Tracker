@@ -21,6 +21,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -32,6 +35,9 @@ jobs:
 
       - name: Build app
         run: npm run build -- --configuration production --base-href /${{ github.event.repository.name }}/
+
+      - name: Disable Jekyll processing
+        run: touch dist/TaskTracker/browser/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
