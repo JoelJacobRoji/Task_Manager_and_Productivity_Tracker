@@ -64,12 +64,8 @@
 
 .task-card {
   border-radius: var(--radius-lg) !important;
-  background: linear-gradient(90deg, rgba(19, 29, 64, 0.96), rgba(18, 29, 67, 0.76)) !important;
+  background: var(--task-card-bg) !important;
   padding: clamp(0.85rem, 2vw, 1.3rem);
-}
-
-body.light-theme .task-card {
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.84)) !important;
 }
 
 .task-content {
@@ -126,6 +122,7 @@ body.light-theme .task-card {
 .task-actions button {
   min-width: 82px;
   font-weight: 600;
+  color: var(--text-main) !important;
 }
 
 .empty-state {

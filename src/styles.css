@@ -16,6 +16,7 @@
   --accent: #7fa1ff;
   --accent-strong: #99b5ff;
   --danger: #ff4f63;
+  --task-card-bg: linear-gradient(90deg, rgba(19, 29, 64, 0.96), rgba(18, 29, 67, 0.76));
   --radius-lg: 20px;
   --radius-md: 14px;
 }
@@ -43,6 +44,7 @@ body.dark-theme {
   --accent: #7fa1ff;
   --accent-strong: #99b5ff;
   --danger: #ff4f63;
+  --task-card-bg: linear-gradient(90deg, rgba(19, 29, 64, 0.96), rgba(18, 29, 67, 0.76));
 }
 
 body.light-theme {
@@ -56,6 +58,7 @@ body.light-theme {
   --accent: #2f4db4;
   --accent-strong: #203d9e;
   --danger: #c22040;
+  --task-card-bg: linear-gradient(90deg, rgba(255, 255, 255, 0.96), rgba(244, 248, 255, 0.94));
 }
 
 mat-toolbar,

@@ -47,11 +47,18 @@ import { Task, TaskPriority } from '../../models/task.model';
       </mat-card>
 
       <div class="status-filters">
-        <button mat-button class="filter-pill" [class.active]="filter.completion === 'all'" (click)="setCompletion('all')">
+        <button
+          mat-button
+          type="button"
+          class="filter-pill"
+          [class.active]="filter.completion === 'all'"
+          (click)="setCompletion('all')"
+        >
           All
         </button>
         <button
           mat-button
+          type="button"
           class="filter-pill"
           [class.active]="filter.completion === 'pending'"
           (click)="setCompletion('pending')"
@@ -60,6 +67,7 @@ import { Task, TaskPriority } from '../../models/task.model';
         </button>
         <button
           mat-button
+          type="button"
           class="filter-pill"
           [class.active]="filter.completion === 'completed'"
           (click)="setCompletion('completed')"
@@ -72,7 +80,7 @@ import { Task, TaskPriority } from '../../models/task.model';
         <div class="filter-grid">
           <mat-form-field appearance="outline">
             <mat-label>Priority</mat-label>
-            <mat-select [value]="filter.priority" (valueChange)="filter.priority = $event">
+            <mat-select [value]="filter.priority" (valueChange)="updatePriority($event)">
               <mat-option value="all">All</mat-option>
               <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority }}</mat-option>
             </mat-select>
@@ -80,7 +88,7 @@ import { Task, TaskPriority } from '../../models/task.model';
 
           <mat-form-field appearance="outline">
             <mat-label>Category</mat-label>
-            <mat-select [value]="filter.category" (valueChange)="filter.category = $event">
+            <mat-select [value]="filter.category" (valueChange)="updateCategory($event)">
               <mat-option value="all">All</mat-option>
               <mat-option *ngFor="let category of categories" [value]="category.name">
                 {{ category.name }}
@@ -114,14 +122,14 @@ import { Task, TaskPriority } from '../../models/task.model';
                   <p class="task-meta" [class.overdue]="isOverdue(task)">
                     Due: {{ task.dueDate | date: 'mediumDate' }}
                   </p>
-                  <p class="task-meta">{{ task.category }} · {{ task.priority }}</p>
+                  <p class="task-meta">{{ task.category }} - {{ task.priority }}</p>
                 </div>
               </div>
 
               <div class="task-actions">
-                <button mat-button [routerLink]="['/task', task.id]">View</button>
-                <button mat-button [routerLink]="['/edit', task.id]">Edit</button>
-                <button mat-button color="warn" (click)="delete(task)">Delete</button>
+                <button mat-button type="button" [routerLink]="['/task', task.id]">View</button>
+                <button mat-button type="button" [routerLink]="['/edit', task.id]">Edit</button>
+                <button mat-button type="button" color="warn" (click)="delete(task)">Delete</button>
               </div>
             </div>
           </mat-card>
@@ -170,7 +178,15 @@ export class TaskListComponent {
   }
 
   setCompletion(completion: 'all' | 'pending' | 'completed'): void {
-    this.filter.completion = completion;
+    this.filter = { ...this.filter, completion };
+  }
+
+  updatePriority(priority: TaskPriority | 'all'): void {
+    this.filter = { ...this.filter, priority };
+  }
+
+  updateCategory(category: string | 'all'): void {
+    this.filter = { ...this.filter, category };
   }
 
   toggle(id: number): void {
