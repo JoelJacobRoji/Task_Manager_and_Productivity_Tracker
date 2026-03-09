@@ -9,6 +9,10 @@
   border-radius: var(--radius-lg);
 }
 
+.filters-card {
+  padding: 1rem 1.2rem 1.05rem;
+}
+
 .summary-line {
   display: flex;
   align-items: center;
@@ -133,6 +137,10 @@
 @media (max-width: 900px) {
   .summary-line p {
     width: 100%;
+  }
+
+  .filters-card {
+    padding: 0.85rem 0.85rem 0.9rem;
   }
 
   .filter-grid {

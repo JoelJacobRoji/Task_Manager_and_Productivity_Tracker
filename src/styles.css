@@ -108,6 +108,24 @@ body.light-theme .mat-mdc-text-field-wrapper {
   padding-bottom: 14px !important;
 }
 
+/* Extra breathing room for dashboard filter selects */
+.tasks-page .filters-card .mat-mdc-text-field-wrapper {
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+
+.tasks-page .filters-card .mat-mdc-form-field-infix {
+  min-height: 64px !important;
+  padding-top: 16px !important;
+  padding-bottom: 14px !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.tasks-page .filters-card .mat-mdc-select-value {
+  padding-left: 1px;
+}
+
 textarea.mat-mdc-input-element {
   min-height: 90px;
 }
