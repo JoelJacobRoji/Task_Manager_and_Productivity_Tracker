@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Category } from '../models/category.model';
 import { Task, TaskPriority } from '../models/task.model';
+import { API_BASE_URL } from '../config/api.config';
 
 export interface TaskFilterOptions {
   completion?: 'all' | 'completed' | 'pending';
@@ -15,8 +16,8 @@ export interface TaskFilterOptions {
   providedIn: 'root'
 })
 export class TaskService {
-  private readonly storageKey = 'tasks';
   private readonly tasksSubject = new BehaviorSubject<Task[]>([]);
+  private readonly tasksEndpoint = `${API_BASE_URL}/tasks`;
 
   readonly tasks$ = this.tasksSubject.asObservable();
   readonly completedTasks$ = this.tasks$.pipe(map(tasks => tasks.filter(task => task.completed)));
@@ -80,33 +81,33 @@ export class TaskService {
   }
 
   addTask(task: Task): Observable<Task[]> {
-    const nextTasks = this.sortTasksByDate([...this.tasksSubject.value, task]);
-    this.persistAndEmit(nextTasks);
-    return of(nextTasks);
+    return this.http.post<Task>(this.tasksEndpoint, task).pipe(
+      switchMap(() => this.refreshTasks()),
+      catchError(() => of(this.tasksSubject.value))
+    );
   }
 
   updateTask(updatedTask: Task): Observable<Task[]> {
-    const nextTasks = this.sortTasksByDate(
-      this.tasksSubject.value.map(task => (task.id === updatedTask.id ? updatedTask : task))
+    return this.http.put<Task>(`${this.tasksEndpoint}/${updatedTask.id}`, updatedTask).pipe(
+      switchMap(() => this.refreshTasks()),
+      catchError(() => of(this.tasksSubject.value))
     );
-
-    this.persistAndEmit(nextTasks);
-    return of(nextTasks);
   }
 
   deleteTask(id: number): Observable<Task[]> {
-    const nextTasks = this.tasksSubject.value.filter(task => task.id !== id);
-    this.persistAndEmit(nextTasks);
-    return of(nextTasks);
+    return this.http.delete<void>(`${this.tasksEndpoint}/${id}`).pipe(
+      switchMap(() => this.refreshTasks()),
+      catchError(() => of(this.tasksSubject.value))
+    );
   }
 
   toggleComplete(id: number): Observable<Task[]> {
-    const nextTasks = this.tasksSubject.value.map(task =>
-      task.id === id ? { ...task, completed: !task.completed } : task
-    );
+    const task = this.getTaskById(id);
+    if (!task) {
+      return of(this.tasksSubject.value);
+    }
 
-    this.persistAndEmit(nextTasks);
-    return of(nextTasks);
+    return this.updateTask({ ...task, completed: !task.completed });
   }
 
   getCategories(): Category[] {
@@ -114,38 +115,27 @@ export class TaskService {
   }
 
   private loadInitialTasks(): void {
-    const storedTasks = this.getStoredTasks();
-
-    if (storedTasks.length) {
-      this.tasksSubject.next(this.sortTasksByDate(storedTasks));
-      return;
-    }
-
-    this.http
-      .get<Task[]>('mock/tasks.json')
+    this.refreshTasks()
       .pipe(
-        catchError(() => of([])),
-        map(tasks => this.sortTasksByDate(tasks))
+        catchError(() =>
+          this.http.get<Task[]>('mock/tasks.json').pipe(
+            map(tasks => this.sortTasksByDate(tasks)),
+            tap(tasks => this.tasksSubject.next(tasks)),
+            catchError(() => {
+              this.tasksSubject.next([]);
+              return of([]);
+            })
+          )
+        )
       )
-      .subscribe(tasks => this.persistAndEmit(tasks));
+      .subscribe();
   }
 
-  private getStoredTasks(): Task[] {
-    const raw = localStorage.getItem(this.storageKey);
-    if (!raw) {
-      return [];
-    }
-
-    try {
-      return JSON.parse(raw) as Task[];
-    } catch {
-      return [];
-    }
-  }
-
-  private persistAndEmit(tasks: Task[]): void {
-    localStorage.setItem(this.storageKey, JSON.stringify(tasks));
-    this.tasksSubject.next(tasks);
+  private refreshTasks(): Observable<Task[]> {
+    return this.http.get<Task[]>(this.tasksEndpoint).pipe(
+      map(tasks => this.sortTasksByDate(tasks)),
+      tap(tasks => this.tasksSubject.next(tasks))
+    );
   }
 
   private sortTasksByDate(tasks: Task[]): Task[] {

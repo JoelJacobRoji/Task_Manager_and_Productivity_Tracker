@@ -138,3 +138,9 @@ Add screenshots in `docs/screenshots/` (recommended):
 ## Notes
 - Default auth state is logged in for demo; use navbar Login/Logout to test guard behavior.
 - If local storage is empty, app loads starter data from `public/mock/tasks.json`.
+
+## Backend API
+- Production backend base URL:
+  - `https://task-tracker-backend-6k2k.onrender.com`
+- Frontend API config file:
+  - `src/app/config/api.config.ts`
