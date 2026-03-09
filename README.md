@@ -3,8 +3,8 @@
 A full-stack task management app built with **Angular + TypeScript** (frontend) and **Node.js + Express** (backend API), focused on productivity workflows such as task tracking, filtering, progress monitoring, and validation.
 
 ## Live Links
-- Frontend: `https://joeljacobroji.github.io/Task_Manager_and_Productivity_Tracker/`
-- Backend API: `https://task-tracker-backend-6k2k.onrender.com`
+- Frontend: [https://joeljacobroji.github.io/Task_Manager_and_Productivity_Tracker/](https://joeljacobroji.github.io/Task_Manager_and_Productivity_Tracker/)
+- Backend API: [https://task-tracker-backend-6k2k.onrender.com](https://task-tracker-backend-6k2k.onrender.com)
 
 ## Features
 - Create, edit, view, delete, and complete tasks
