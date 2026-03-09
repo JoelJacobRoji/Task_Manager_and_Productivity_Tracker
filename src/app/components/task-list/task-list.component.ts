@@ -7,20 +7,32 @@ import { RouterModule } from '@angular/router';
 import { PriorityHighlightDirective } from '../../directives/priority-highlight.directive';
 import { TaskService } from '../../services/task.service';
 import { Task } from '../../models/task.model';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   standalone: true,
   selector: 'app-task-list',
   imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatCheckboxModule,
-    RouterModule,
-    PriorityHighlightDirective
-  ],
+  CommonModule,
+  MatCardModule,
+  MatButtonModule,
+  MatCheckboxModule,
+  MatProgressBarModule,
+  RouterModule,
+  PriorityHighlightDirective
+],
   styleUrls: ['./task-list.component.css'],
   template: `
+  <div style="margin: 20px 0;">
+  <p>
+    Completed {{ completedCount }} / {{ tasks.length }} tasks
+  </p>
+
+  <mat-progress-bar
+    mode="determinate"
+    [value]="completionPercent">
+  </mat-progress-bar>
+</div>
   <div class="tasks-page">
 
   <!-- FILTERS -->
@@ -33,9 +45,10 @@ import { Task } from '../../models/task.model';
   <!-- TASKS -->
   <div class="tasks-container">
   <mat-card
-    class="task-card"
-    *ngFor="let task of filteredTasks()"
-  >
+  class="task-card"
+  *ngFor="let task of filteredTasks()"
+  [appPriorityHighlight]="task.priority"
+>
     <div style="display:flex; justify-content:space-between;">
 
       <!-- LEFT -->
@@ -54,7 +67,12 @@ import { Task } from '../../models/task.model';
         </mat-checkbox>
 
         <p class="task-muted">{{ task.description }}</p>
-        <p class="task-muted">Due: {{ task.dueDate }}</p>
+        <p
+  class="task-muted"
+  [style.color]="isOverdue(task) ? '#ff6b6b' : ''"
+>
+  Due: {{ task.dueDate | date }}
+</p>
 
         <p class="task-muted">
           {{ task.category }} · {{ task.priority }}
@@ -91,6 +109,26 @@ export class TaskListComponent {
   delete(id: number) {
     this.taskService.deleteTask(id);
   }
+
+  get completedCount(): number {
+  return this.tasks.filter(t => t.completed).length;
+}
+
+  get completionPercent(): number {
+  if (this.tasks.length === 0) return 0;
+
+  const completed = this.tasks.filter(t => t.completed).length;
+  return (completed / this.tasks.length) * 100;
+}
+
+isOverdue(task: Task): boolean {
+  if (task.completed) return false;
+
+  const today = new Date();
+  const due = new Date(task.dueDate);
+
+  return due < today;
+}
 
   filteredTasks() {
     if (this.filter === 'completed') {
